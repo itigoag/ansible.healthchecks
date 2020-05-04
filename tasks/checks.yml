@@ -1,0 +1,43 @@
+---
+# tasks file for itigoag.healthchecks
+
+- name: 'checks list'
+  uri:
+    url: https://healthchecks.itigo.tech/api/v1/checks/
+    return_content: yes
+    headers:
+      X-Api-Key: '{{ healthchecks_key }}'
+  register: healthchecks_list
+  delegate_to: localhost
+
+- set_fact:
+    checks: "{{ healthchecks_list.json | json_query('checks[*].name')  }}"
+
+- name: Create a check
+  uri:
+    url: https://healthchecks.itigo.tech/api/v1/checks/
+    body: '{"name": "{{ check.name }}", "tags": "{{ check.tags }}", "timeout": 1209600, "grace": 604800, "channels": "*"}'
+    headers:
+      X-Api-Key: '{{ healthchecks_key }}'
+    body_format: json
+    method: POST
+    status_code: 201
+  when: 'check.name not in checks'
+  delegate_to: localhost
+
+- name: 'checks list'
+  uri:
+    url: https://healthchecks.itigo.tech/api/v1/checks/
+    return_content: yes
+    headers:
+      X-Api-Key: '{{ healthchecks_key }}'
+  register: healthchecks_list
+  delegate_to: localhost
+
+- set_fact:
+    temp: '{{ healthchecks_list.json | json_query(query) }}'
+  vars:
+    query: "checks[?name=='{{ check.name }}'].ping_url"
+
+- set_fact:
+    "{{ check.name | replace(' ', '_') }}_key": '{{ temp[0].split("/")[-1] }}'
