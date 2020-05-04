@@ -40,4 +40,4 @@
     query: "checks[?name=='{{ check.name }}'].ping_url"
 
 - set_fact:
-    "{{ check.name | replace('.', '_') | replace(' ', '_') }}_key": '{{ temp[0].split("/")[-1] }}'
+    "{{ check.name | replace('.', '_') | replace(' ', '_') | replace('-', '_')  }}_key": '{{ temp[0].split("/")[-1] }}'
