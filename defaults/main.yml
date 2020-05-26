@@ -2,3 +2,5 @@
 # defaults file for itigoag.healthchecks
 
 healthchecks_key: ''
+
+healthchecks_enable: true
