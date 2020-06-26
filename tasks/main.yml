@@ -4,9 +4,9 @@
 - name: 'include file type'
   include_tasks: 'checks.yml'
   loop:
-    - name: "{{ inventory_hostname.split('.')[0] }}.{{ domain_membership_domain_name }} choco update"
+    - name: '{{ healthchecks_fqdn }} choco update'
       tags: 'Chocolatey'
-    - name: "{{ inventory_hostname.split('.')[0] }}.{{ domain_membership_domain_name }} playbook run"
+    - name: '{{ healthchecks_fqdn }} playbook run'
       tags: 'Playbook'
   loop_control:
     loop_var: check
