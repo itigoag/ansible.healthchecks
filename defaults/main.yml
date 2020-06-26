@@ -5,4 +5,4 @@ healthchecks_key: ''
 
 healthchecks_enable: true
 
-healthchecks_fqdn: "{{ inventory_hostname.split('.')[0] }}.{{ domain_membership_domain_name | default(inventory_hostname.split('.')[1:].join('.') ) }}"
+healthchecks_fqdn: "{{ inventory_hostname.split('.')[0] }}.{{ domain_membership_domain_name | default(inventory_hostname.split('.')[1:] | join('.') ) }}"
